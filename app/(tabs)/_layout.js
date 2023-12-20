@@ -1,8 +1,36 @@
-import { Tabs } from "expo-router";
-import { Entypo } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { useFonts } from "expo-font";
+import { Tabs, router } from "expo-router";
+import { Entypo, Ionicons } from "@expo/vector-icons";
+import storage from "../../lib/storage";
+import Loading from "../../components/loading";
 
 export default function TabsLayout() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const checkOnboarding = async () => {
+    console.log("checking onboarding value");
+
+    try {
+      const value = await storage.load({
+        key: "viewedOnboarding",
+      });
+
+      console.log("Onboarding from AsyncStorage", value);
+    } catch (error) {
+      return router.push("/onboarding");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    checkOnboarding();
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Tabs
       screenOptions={{

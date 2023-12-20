@@ -1,36 +1,24 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, Text, Pressable, Image, ScrollView } from "react-native";
 
 const BooksCarousel = ({ data }) => {
   return (
-    <View style={{ paddingBottom: 8 }}>
+    <View style={{ paddingVertical: 12 }}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {data?.map((book, index) => (
-          <BookCard item={book} />
+          <BookCard index={index} item={book} />
         ))}
       </ScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 8,
-  },
-});
-
 export default BooksCarousel;
 
 const BookCard = ({ item, index }) => {
+  const title = "Authority";
+  const author = "Jeff Vandermeer";
   return (
-    <TouchableWithoutFeedback>
+    <Pressable key={index}>
       <View>
         <Image
           source={require("../assets/images/book-cover1.png")}
@@ -42,16 +30,13 @@ const BookCard = ({ item, index }) => {
             marginBottom: -20,
           }}
         />
-        <Text
-          style={{
-            fontWeight: "600",
-            padding: 0,
-          }}
-        >
-          Authoity
+        <Text style={{ fontWeight: 600 }}>
+          {title.length > 14 ? title.substring(0, 14) + "..." : title}
         </Text>
-        <Text style={{ fontSize: 12 }}>Jeff Vandermeer</Text>
+        <Text style={{ fontSize: 12 }}>
+          {author.length > 18 ? author.substring(0, 18) + "..." : author}
+        </Text>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };

@@ -9,11 +9,22 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import BooksCarousel from "../../components/books-carousel";
+import storage from "../../lib/storage";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
+  function handleRemove() {
+    storage.remove({
+      key: "viewedOnboarding",
+    });
+    router.push("/onboarding");
+  }
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Pressable style={{ paddingTop: 26 }} onPress={handleRemove}>
+        <Text>Remove onboarding value</Text>
+      </Pressable>
+      <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>For you</Text>
           <Pressable onPress={() => console.log("opening notifications")}>
@@ -42,13 +53,11 @@ export default function HomeScreen() {
               >
                 Leave the world behind
               </Text>
-              <Text style={{ color: "white" }}>Rumaan Alam</Text>
+              <Text style={{ color: "white", marginBottom: 8 }}>
+                Rumaan Alam
+              </Text>
               <Pressable
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginVertical: 14,
-                }}
+                style={{ flexDirection: "row", alignItems: "center", gap: 1 }}
               >
                 <Text style={{ color: "white" }}>Read now</Text>
                 <Ionicons name="arrow-forward" size={24} color="white" />
@@ -65,7 +74,7 @@ export default function HomeScreen() {
           <Text style={styles.subtitle}>Today for you</Text>
           <BooksCarousel data={[1, 2, 3, 4]} />
         </View>
-        <View style={{ marginTop: 16 }}>
+        <View>
           <Text style={styles.subtitle}>To be productive</Text>
           <BooksCarousel data={[1, 2, 3, 4]} />
         </View>
@@ -86,13 +95,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
   },
-  dailySection: {
-    marginTop: 20,
-  },
   subtitle: {
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: 600,
     marginVertical: 8,
+  },
+  dailySection: {
+    marginTop: 20,
   },
   dailyBox: {
     position: "relative",
